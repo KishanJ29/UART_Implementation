@@ -21,11 +21,6 @@ architecture rtl of piso is
 			data_in <= (others => '0');
 			d_out <= '1';
 		 elsif(rising_edge(piso_clk))then
---			if(load = '1')then
---				data_in <= din;
---			else
---				data_in <= shift_right((data_in),1); --the function only accepts Unsined else it use concert to unsigned  
---			end if;
 			case(load) is
 				when '1' => 
 					data_in <= din;
