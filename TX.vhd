@@ -5,7 +5,7 @@ entity TX_Top is
 	port( clk : in std_logic;
           rst: in std_logic;
 		  data_in : in unsigned(7 downto 0);
-		  baud_rate: in std_logic;
+		  baud_rate: in integer;
 		  RTS :in std_logic;
 		  serial_out:out std_logic
 		  );
@@ -15,10 +15,9 @@ architecture TOP of TX_Top is
 	component baud_gen is 
 		port( sysclk :in std_logic;
 			  rst : in std_logic;
-			  baud_rate: in std_logic;
+			  baud_rate: in integer;
 		--Baud Rate chossen from the system; 1 -> 9600; 0-> 115200  
-			  enable_96:out std_logic;
-			  enable_1152:out std_logic	
+			   baudEnable:out std_logic	
 			);
 	end component;
 
@@ -26,7 +25,7 @@ architecture TOP of TX_Top is
 	port( sysclk : in std_logic;
 		  rst : in std_logic;
 		  din : in unsigned(7 downto 0);
-		  baud_rate: in std_logic;
+		  baud_rate: in integer;
 		  baud_enable : in std_logic;
 		  RTS : in std_logic; -- Request to Send 
  		  d_out	: out std_logic
@@ -37,7 +36,9 @@ architecture TOP of TX_Top is
 		signal baud1152_BaudGen_Cntrl: std_logic;
 
 	begin
-		baudEnable_BaudGen_Cntrl <= baud96_BaudGen_Cntrl or baud1152_BaudGen_Cntrl;
+	 		
+
+		
 		TXNCNTRL_BLK : entity work.TXNCNTRL port map( 	  sysclk => clk,
 														  rst => rst,
 														  din => data_in,
@@ -47,11 +48,10 @@ architecture TOP of TX_Top is
 												 		  d_out	=> serial_out
 														);
 
-		Baud_Gen_Blk	: entity work.baud_gen port map( 	  sysclk => clk,
+		Baud_Gen_Blk	: entity work.baud_gen port map(  sysclk => clk,
 														  rst => rst,
 														  baud_rate => baud_rate,
 													--Baud Rate chossen from the system; 1 -> 9600; 0-> 115200  
-														  enable_96 => baud96_BaudGen_Cntrl,
-														  enable_1152=> baud1152_BaudGen_Cntrl
+														  baudEnable	 => baudEnable_BaudGen_Cntrl														 
 														);
 	end TOP;
