@@ -15,7 +15,7 @@ architecture rtl of baud_gen is
 		signal count :  integer range 0 to 2000 := 0; 
 	--	signal count_1152 :  integer range 0 to 2000 := 0; 
 	begin
-		--baudEnable <= enable_96 or enable_1152;
+		-- Count value is dervied from System Clk of 12MHz 
 		 process(sysclk)
 				begin
 				  if(rising_edge(sysclk))then
